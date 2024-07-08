@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>moviestack</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="flex flex-col min-h-screen">
+    <header class="flex items-center justify-between pr-6 border-b border-white bg-black">
+      <div class="flex items-center">
+        <img src="../assets/isotipo.png" alt="isotipo" class="w-28 h-20 mr-3" />
+        <img src="../assets/logo.png" alt="logo" class="w-32 h-20 mr-3" />
+      </div>
+      <nav class="flex space-x-4">
+        <a href="#" class="text-white border-2 border-white px-2">HOME</a>
+        <a href="movies.html" class="text-white">MOVIES</a>
+        <a href="#" class="text-white">FAVS</a>
+      </nav>
+    </header>
+    <main class="flex-grow">
+      <img src="../assets/banner.gif" alt="isotipo" class="max-h-96 md:max-h-120 mx-auto my-4" />
+      <p class="text-center text-lg md:text-xl lg:text-2xl mx-4 my-8">
+        Welcome to our cinematic universe! Immerse yourself in a kaleidoscope of stories, where heroes rise, villains fall, and love transcends time.
+        From epic blockbusters to indie gems, our film library spans eras and emotions. Grab your popcorn, find your seat, and let the silver screen transport you to places unknown. Lights down, dreams up!
+      </p>
+      <div class="flex flex-col md:flex-row justify-center mt-8">
+        <a href="../movies.html" class="bg-black hover:bg-[#6D38E0] text-white font-bold py-6 px-8 rounded-lg mx-4 mb-4">
+          <span class="text-xl">Explore Movies</span>
+          <p class="text-sm mt-2">Discover a world of cinematic wonders!</p>
+        </a>
+        <a href="#" class="bg-black hover:bg-[#6D38E0] text-white font-bold py-6 px-8 rounded-lg mx-4 mb-4">
+          <span class="text-xl">View Favorites</span>
+          <p class="text-sm mt-2">Your personalized collection awaits!</p>
+        </a>
+      </div>
+    </main>
+    <footer class="bg-black p-4">
+      <p class="text-center text-white">Amparo Perez - Cohort 55</p>
+    </footer>
+  </body>
+</html>
