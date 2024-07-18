@@ -3,49 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>moviedetail</title>
+    <title> MOVIESTACK 🍿</title>
     <link rel="icon" href="assets/favicon.png" type="image/png">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://kit.fontawesome.com/d5b7617a67.js" crossorigin="anonymous"></script>
 </head>
-<body class="flex flex-col min-h-screen">
-    <header
-      class="flex flex-col sm:flex-row items-center justify-between p-4 sm:p-6 border-b border-white bg-black"
-    >
-      <div class="flex items-center mb-4 sm:mb-0">
-        <img
-          src="../assets/isotipo.png"
-          alt="isotipo"
-          class="w-20 h-14 sm:w-28 sm:h-20 mr-2 sm:mr-3"
-        />
-        <img
-          src="../assets/logo.png"
-          alt="logo"
-          class="w-24 h-14 sm:w-32 sm:h-20 mr-2 sm:mr-3"
-        />
+<body class="flex flex-col min-h-screen bg-gray-100">
+  <header class="flex items-center justify-between px-6 py-2 border-b border-white bg-black">
+    <div class="flex items-center space-x-4">
+        <a href="../index.html">
+          <img src="../assets/isotipo.png" alt="isotipo" class="w-24 h-24 md:w-32 md:h-32" />
+        </a>
+        <a href="../index.html">
+          <img src="../assets/logo.png" alt="logo" class="w-32 h-24 md:w-48 md:h-32" />
+        </a>
       </div>
-      <nav
-        class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4"
-      >
-        <a
-          href="../index.html"
-          class="text-white border-2 px-2 sm:px-4"
-          >HOME</a
-        >
-        <a href="../movies.html" class="text-white border-2 px-2 sm:px-4"
-          >MOVIES</a
-        >
-        <a href="#" class="text-white border-2 border-white px-2 sm:px-4"
-          >FAVS</a
-        >
-      </nav>
-    </header>
-<main class="flex flex-wrap flex-grow gap-4 justify-center">
-<div id="moviedetailDIV"class="container mx-auto p-4 flex flex-wrap gap-4 w-full"></div>
-</main>
-<footer class="bg-black p-4 text-center">
+    <nav class="flex space-x-4 text-lg">
+      <a href="../index.html" class="text-white border-2 border-white px-4 py-2 rounded-lg hover:bg-white hover:text-black transition-colors duration-300">HOME</a>
+      <a href="../movies.html" class="text-white border-2 border-white px-4 py-2 rounded-lg hover:bg-white hover:text-black transition-colors duration-300">MOVIES</a>
+      <a href="../favs.html" class="text-white border-2 border-white px-4 py-2 rounded-lg hover:bg-white hover:text-black transition-colors duration-300">FAVS</a>
+    </nav>
+  </header>
+  <main class="flex-grow container mx-auto p-4">
+    <div id="myNewDiv" class="w-full"></div>
+  </main>
+<footer class="bg-black p-4">
     <p class="text-center text-white">Amparo Perez - Cohort 55</p>
-  </footer>
-  <script src="./data.js"></script>
-  <script src="./details.js"></script>
+</footer>
+<script src="./details.js"></script>
 </body>
 </html>

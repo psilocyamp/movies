@@ -1,12 +1,67 @@
+const apiURL = "https://moviestack.onrender.com/api/movies";
+const apiKey = "0ff70d54-dc0b-4262-9c3d-776cb0f34dbd";
+
 const mainElement = document.querySelector("main");
 
 const newDiv = document.createElement("div");
 newDiv.id = "myNewDiv";
 mainElement.appendChild(newDiv);
 
-//const arrayMovies = movies;
+//aca obtengo los datos de la api
 
-function cardsCreator(arrayMovies) {
+fetch(apiURL, {
+  method: "GET",
+  headers: {
+    "x-api-key": apiKey,
+  },
+})
+  .then((response) => response.json())
+  .then((data) => {
+    let dataMovies = data.movies;
+    dataMovies.forEach(
+      (pelicula) =>(pelicula.image = `https://moviestack.onrender.com/static/${pelicula.image}`)
+    );
+
+    let genresList = listaFiltradadeGeneros(dataMovies);
+    select.innerHTML = `<option value="all">All</option>`;
+    genresList.forEach((genre) => {
+      select.innerHTML += `<option value="${genre}">${genre}</option>`;
+    });
+
+    searcher.addEventListener("input", (event) => {
+      event.preventDefault();
+      let buscador = event.target.value;
+      let array = listaFiltradaPorNombre(dataMovies, buscador);
+      let filtratotal = listaFiltradaPorGeneros(array, select.value);
+      cardsCreator(filtratotal);
+    });
+    
+    select.addEventListener("change", (event) => {
+      event.preventDefault();
+      let genero = event.target.value;
+      let array = listaFiltradaPorGeneros(dataMovies, genero);
+      let filtratotal = listaFiltradaPorNombre(array, searcher.value);
+      cardsCreator(filtratotal);
+    });
+    localStorage.setItem('movies', JSON.stringify(dataMovies))
+    cardsCreator(dataMovies);
+
+  })
+  .catch((error) => {
+    console.log("Error fetching data", error);
+  });
+
+const toggleFavorite = (movieId) => {
+  let favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+  if (favorites.includes(movieId)) {
+    favorites = favorites.filter(id => id !== movieId);
+  } else {
+    favorites.push(movieId);
+  }
+  localStorage.setItem('favorites', JSON.stringify(favorites));
+};
+
+const cardsCreator = (arrayMovies) => {
   const container = document.getElementById("myNewDiv");
   container.classList.add(
     "flex",
@@ -21,37 +76,48 @@ function cardsCreator(arrayMovies) {
 
   let cardsCreadasHTML = "";
 
+  const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+
   arrayMovies.forEach((movie) => {
-    // itera sobre cada película en el array arrayMovies usando el método forEach
+    const isFavorite = favorites.includes(movie.id);
+    const starClass = isFavorite ? 'fa-solid text-yellow-400' : 'fa-regular';
     const cardHTML = `
-                    <article class="flex flex-col items-center text-center w-full sm:w-[48%] md:w-[40%] lg:w-[30%] xl:w-[22%] bg-white rounded-lg shadow-md p-4 m-2 min-h-[300px]">
+      <article class="flex flex-col items-center text-center w-full sm:w-[48%] md:w-[40%] lg:w-[30%] xl:w-[22%] bg-white rounded-lg shadow-md p-6 m-2 min-h-[350px]">
+        <button class="favorite-button" data-id="${movie.id}">
+          <i data-id="${movie.id}" class="${starClass} fa-star fa-xl toggle"></i>
+        </button>
         <a href="moviedetail.html?id=${movie.id}" class="flex flex-col items-center">
-          <img src="${movie.image}" class="w-32 h-32 object-cover mt-2">
-          <h2 class="text-xl font-semibold mt-2">${movie.title}</h2>
-          <h3 class="text-md font-medium text-gray-700 mt-1">${movie.tagline}</h3>
-          <p class="text-gray-600 flex-grow mt-2">${movie.overview}</p>
+          <img src="${movie.image}" class="w-40 h-40 object-cover mt-4 rounded-lg">
+          <h2 class="text-2xl font-semibold mt-4">${movie.title}</h2>
+          <h3 class="text-lg font-medium text-gray-700 mt-2">${movie.tagline}</h3>
+          <p class="text-gray-600 flex-grow mt-4">${movie.overview}</p>
         </a>
       </article>
-                        
-                `
+    `;
 
-    cardsCreadasHTML += cardHTML
+    cardsCreadasHTML += cardHTML;
   });
-  container.innerHTML = cardsCreadasHTML
-}
+  container.innerHTML = cardsCreadasHTML;
+  
 
-cardsCreator(movies);
+  document.querySelectorAll('.toggle').forEach(star => {
+    star.addEventListener('click', (event) => {
+      event.stopPropagation(); // Evita la propagación del evento al enlace
+      const movieId = event.target.getAttribute('data-id');
+      toggleFavorite(movieId);
+      event.target.classList.toggle('fa-solid');
+      event.target.classList.toggle('fa-regular');
+    });
+  });
+};
 
 
-//favicon
 
-
-//filtrossss
+// //filtrossss
 
 let select = document.getElementById("filtro");
 let searcher = document.getElementById("buscador");
 
-// Aplicar clases de Tailwind CSS
 select.classList.add(
   "p-2",
   "border",
@@ -75,51 +141,29 @@ searcher.classList.add(
 );
 
 let listaFiltradadeGeneros = (movies) => {
-  const filtros = [...new Set(movies.flatMap(movie => movie.genres))].toSorted();
+  const filtros = [
+    ...new Set(movies.flatMap((movie) => movie.genres)),
+  ].toSorted();
   return filtros;
 };
 
-let genresList = listaFiltradadeGeneros(movies);
-select.innerHTML = `<option value="all">All</option>`; // Añadir opción "All" predeterminada
-genresList.forEach(genre => {
-  select.innerHTML += `<option value="${genre}">${genre}</option>`;
-});
+
 
 let listaFiltradaPorGeneros = (array, valor) => {
   let filtradosPorGenero = [];
   if (valor === "all") {
     filtradosPorGenero = array;
   } else {
-    filtradosPorGenero = array.filter(movie => movie.genres.includes(valor));
+    filtradosPorGenero = array.filter((movie) => movie.genres.includes(valor));
   }
   return filtradosPorGenero;
 };
 
 let listaFiltradaPorNombre = (array, valor) => {
-  let filtradordeBusqueda = array.filter(movie => movie.title.toLowerCase().includes(valor.toLowerCase()));
+  let filtradordeBusqueda = array.filter((movie) =>
+    movie.title.toLowerCase().includes(valor.toLowerCase())
+  );
   return filtradordeBusqueda;
 };
-
-searcher.addEventListener('input', (event) => {
-  event.preventDefault();
-  let buscador = event.target.value;
-  let input = listaFiltradaPorNombre(movies, buscador);
-  let filtratotal = listaFiltradaPorGeneros(input, select.value);
-  cardsCreator(filtratotal);
-});
-
-select.addEventListener('change', (event) => {
-  event.preventDefault();
-  console.log(event.target.value);
-  let genero = event.target.value;
-  let input = listaFiltradaPorGeneros(movies, genero);
-  let filtratotal = listaFiltradaPorNombre(input, searcher.value);
-  cardsCreator(filtratotal);
-});
-
-
-
-
-
 
 
